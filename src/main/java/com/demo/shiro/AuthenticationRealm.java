@@ -23,6 +23,14 @@ import com.demo.bean.RoleBean;
 import com.demo.bean.UserBean;
 import com.demo.service.IUserService;
 
+/**
+ * 
+ * @author admin AuthorizingRealm为AuthenticatingRealm子类，
+ *         AuthenticatingRealm中有CredentialsMatcher对象属性
+ *         ，其中CredentialsMatcher具有doCredentialsMatch方法，
+ *         因此，自定义类继承CredentialsMatcher或其子类
+ *         ，重写doCredentialsMatch方法,将此自定义类注入到当前类的对象属性中，可实现自定义密码匹配规则
+ */
 public class AuthenticationRealm extends AuthorizingRealm {
 
 	private Logger logger = LoggerFactory.getLogger(AuthenticationRealm.class);
@@ -41,7 +49,7 @@ public class AuthenticationRealm extends AuthorizingRealm {
 			logger.debug("未找到该账号");
 			// 未找到用户
 			throw new UnknownAccountException("没有找到该账号");
-		
+
 		}
 		/**
 		 * 交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配

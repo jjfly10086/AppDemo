@@ -12,8 +12,8 @@
 
 	<!--shiro配置 -->
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"></bean>
-	<!-- 数据库保存的密码是使用MD5算法加密的，所以这里需要配置一个密码匹配对象 -->
-	<bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.Md5CredentialsMatcher"></bean>
+	<!-- 数据库保存的密码是使用MD5算法加密的，所以这里需要配置一个密码匹配对象(自定义匹配对象) -->
+	<bean id="credentialsMatcher" class="com.demo.shiro.Md5SaltCredentialsMatcher"></bean>
 
 	<!-- 缓存管理 -->
 	<bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager"></bean>

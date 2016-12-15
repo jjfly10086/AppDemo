@@ -68,7 +68,7 @@
     <servlet-name>SpringMVC</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
-  <!--静态文件支持  -->
+  <!--静态-------文件支持  -->
   <servlet-mapping>
     <servlet-name>default</servlet-name>
     <url-pattern>*.html</url-pattern>

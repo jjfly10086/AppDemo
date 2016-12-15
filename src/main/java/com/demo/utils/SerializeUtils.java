@@ -6,8 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 /**
- * ĞòÁĞ»¯¹¤¾ßÀà
- * sssss
+ * åŸ¼ì£—ëºë¬ì•¼ìš
  * @author admin
  */
 public class SerializeUtils {
@@ -15,7 +14,7 @@ public class SerializeUtils {
 		ObjectOutputStream oos = null;
 		ByteArrayOutputStream baos = null;
 		try {
-			// ĞòÁĞ»¯
+			// åŸ¼ì£—ëº
 			baos = new ByteArrayOutputStream();
 			oos = new ObjectOutputStream(baos);
 			oos.writeObject(object);
@@ -30,7 +29,7 @@ public class SerializeUtils {
 	public static Object unserialize(byte[] bytes) {
 		ByteArrayInputStream bais = null;
 		try {
-			// ·´ĞòÁĞ»¯
+			// ëŸ½åŸ¼ì£—ëº
 			bais = new ByteArrayInputStream(bytes);
 			ObjectInputStream ois = new ObjectInputStream(bais);
 			return ois.readObject();

@@ -4,7 +4,11 @@ import java.security.MessageDigest;
 import java.util.Random;
 
 import org.apache.commons.codec.binary.Hex;
-
+/**
+ * 自定义md5
+ * @author admin
+ *
+ */
 public class MD5Utils {
 	public static String generate(String password) {
 		Random r = new Random();
@@ -49,7 +53,7 @@ public class MD5Utils {
 	}
 
 	/**
-	 * 获取十六进制字符串形式的MD5摘要
+	 * 获取十六进制字符串形式的MD5摘要(未加盐原始md5方式)
 	 */
 	private static String md5Hex(String src) {
 		try {
@@ -61,8 +65,7 @@ public class MD5Utils {
 		}
 	}
 	public static void main(String[] args) {
-		String str = "123456";
-		System.out.println(generate(str));
-		System.out.println(verify("123456",generate(str)));
+		System.out.println(md5Hex("123456"));
+		System.out.println(generate("123456"));
 	}
 }

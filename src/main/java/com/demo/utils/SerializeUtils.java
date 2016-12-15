@@ -9,7 +9,6 @@ import java.io.ObjectOutputStream;
  * 序列化工具类
  * 
  * @author admin
- *dsffdsfs测试
  */
 public class SerializeUtils {
 	public static byte[] serialize(Object object) {

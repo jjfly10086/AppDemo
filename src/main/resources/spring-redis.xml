@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd  
+	http://www.springframework.org/schema/context  
+	http://www.springframework.org/schema/context/spring-context-3.1.xsd  
+	http://www.springframework.org/schema/mvc  
+	http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+
+	<!--引入redis配置文件,spring文件中引入多个properties时，必须都加上ignore-unxxxxxx -->
+	<context:property-placeholder location="classpath:redis.properties"
+		ignore-unresolvable="true" />
+	<!--redis连接池配置 高版本中无maxActive和maxWait属性（已更名） -->
+	<bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxIdle" value="${redis.maxIdle}" />
+		<property name="maxTotal" value="${redis.maxActive}" />
+		<property name="maxWaitMillis" value="${redis.maxWait}" />
+		<property name="testOnBorrow" value="${redis.testOnBorrow}" />
+	</bean>
+	<!--redis连接对象 -->
+	<bean id="connectionFactory"
+		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+		p:host-name="${redis.host}" p:port="${redis.port}" p:password="${redis.pass}"
+		p:pool-config-ref="poolConfig" />
+
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean>
+	<!--注入reids操作对象Bean  -->
+	<bean id="redisService" class="com.demo.redis.RedisServiceImpl">
+		<property name="redisTemplate" ref="redisTemplate"></property>
+	</bean>
+	<!--注入获取Bean对象的BeanUtils对象  -->
+	<bean id="beanUtils" class="com.demo.utils.BeanUtils"></bean>
+</beans>

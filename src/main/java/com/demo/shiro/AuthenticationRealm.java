@@ -25,7 +25,7 @@ import com.demo.service.IUserService;
 
 /**
  * 
- * @author admin AuthorizingRealm为AuthenticatingRealm子类，
+ * @author AuthorizingRealm为AuthenticatingRealm子类，
  *         AuthenticatingRealm中有CredentialsMatcher对象属性
  *         ，其中CredentialsMatcher具有doCredentialsMatch方法，
  *         因此，自定义类继承CredentialsMatcher或其子类
@@ -46,7 +46,7 @@ public class AuthenticationRealm extends AuthorizingRealm {
 		String username = (String) token.getPrincipal();
 		UserBean user = userService.findUserByUsername(username);
 		if (user == null) {
-			logger.debug("未找到该账号");
+			logger.info("未找到该账号");
 			// 未找到用户
 			throw new UnknownAccountException("没有找到该账号");
 
@@ -68,6 +68,7 @@ public class AuthenticationRealm extends AuthorizingRealm {
 	protected AuthorizationInfo doGetAuthorizationInfo(
 			PrincipalCollection principals) {
 		String username = (String) principals.getPrimaryPrincipal();
+		logger.info("查询用户"+username+"角色权限");
 		UserBean user = userService.findUserByUsername(username);
 		List<RoleBean> roleList = userService.queryRoleListByUserId(user
 				.getId());

@@ -38,6 +38,7 @@ public class Md5SaltCredentialsMatcher extends HashedCredentialsMatcher {
 				String pass = (String)info.getCredentials();
 				logger.info("明文密码：" + plainPass + "---" + "密文密码：" + pass);
 				if(MD5Utils.verify(plainPass, pass)){//验证通过
+					logger.info("登录成功");
 					return true;
 				}
 			}

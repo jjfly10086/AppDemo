@@ -43,7 +43,7 @@ public class AppController {
 		if(user != null){
 			if(MD5Utils.verify(userPass, user.getUserPass())){
 				String token = TokenUtils.generateToken(user.getId());
-				res.setHeader("Authentication", token);
+				res.setHeader("Authorization", token);
 				resultMap.put("code", "0");
 				resultMap.put("msg", "µÇÂ¼³É¹¦");
 			}

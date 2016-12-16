@@ -53,7 +53,7 @@ public class AppFilter implements Filter {
 		}else if(req.getRequestURI().contains("/app")){
 			logger.info("过滤请求："+req.getRequestURI());
 			//验证token是否合法
-			String token = req.getHeader("Authentication");
+			String token = req.getHeader("Authorization");
 			if(null == token){
 				res.setCharacterEncoding("utf-8");
 				res.setContentType("text/json");

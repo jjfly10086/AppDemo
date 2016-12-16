@@ -18,7 +18,7 @@ public class RedisServiceImpl extends MyRedisTemplate<String, Object>
 	 * 新增
 	 */
 	@Override
-	public boolean add(String key,Object obj) {
+	public boolean add(final String key,final Object obj) {
 		boolean result = redisTemplate.execute(new RedisCallback<Boolean>() {
 			@Override
 			public Boolean doInRedis(RedisConnection connection)
@@ -42,7 +42,7 @@ public class RedisServiceImpl extends MyRedisTemplate<String, Object>
 	 * 删除
 	 */
 	@Override
-	public boolean del(String key) {
+	public boolean del(final String key) {
 		boolean result = redisTemplate.execute(new RedisCallback<Boolean>() {
 			@Override
 			public Boolean doInRedis(RedisConnection connection)
@@ -65,7 +65,7 @@ public class RedisServiceImpl extends MyRedisTemplate<String, Object>
 	 * 获取用户
 	 */
 	@Override
-	public Object get(String key) {
+	public Object get(final String key) {
 		Object obj = redisTemplate.execute(new RedisCallback<Object>() {
 			@Override
 			public Object doInRedis(RedisConnection connection)

@@ -3,10 +3,13 @@ package com.demo.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.demo.utils.RSAUtils;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.bouncycastle.jcajce.provider.asymmetric.RSA;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,9 @@ import com.demo.bean.UserBean;
 import com.demo.redis.IRedisService;
 import com.demo.service.IUserService;
 import com.demo.utils.BeanUtils;
+
+import java.util.Map;
+
 
 @Controller("loginController")
 @RequestMapping("/login")
@@ -34,6 +40,11 @@ public class LoginController {
 	 */
 	@RequestMapping("")
 	public String toLoginPage(ModelMap model) {
+        //2.从redis获取公钥返回页面
+        IRedisService redisService = (IRedisService) BeanUtils.getBean("redisService");
+        String publicKey = (String)redisService.get("publicKey");
+        logger.info("返回公钥："+publicKey);
+        model.addAttribute("publicKey",publicKey);
 		return "login";
 	}
 
@@ -46,17 +57,24 @@ public class LoginController {
 	 */
 	@RequestMapping("/doLogin")
 	public String doLogin(HttpServletRequest req, HttpServletResponse res,
-			ModelMap modelMap) {
+			ModelMap modelMap) throws Exception{
 		String userName = req.getParameter("userName");
 		String userPass = req.getParameter("userPass");
+		//1. 从redis获取私钥解密
+        IRedisService redisService = (IRedisService) BeanUtils.getBean("redisService");
+        String privateKey = (String)redisService.get("privateKey");
+		userName = RSAUtils.decrypt(RSAUtils.getPrivateKey(privateKey),userName);
+        userPass = RSAUtils.decrypt(RSAUtils.getPrivateKey(privateKey),userPass);
+        logger.info("解密后用户名："+userName+" ----------- 密码"+userPass);
+        //2. 根据request获取用户名密码创建token
 		UsernamePasswordToken token = new UsernamePasswordToken(userName,
-				userPass);// 根据request获取用户名密码创建token
+				userPass);
 		Subject subject = SecurityUtils.getSubject();
 		String msg = "";
 		try {
 			subject.login(token);// 登录认证--->转到AuthenticationRealm的doGetAuthentication方法
 			// 缓存redis
-			IRedisService redisService = (IRedisService) BeanUtils.getBean("redisService");
+			//IRedisService redisService = (IRedisService) BeanUtils.getBean("redisService");
 			UserBean user = userService.findUserByUsername(userName);
 			redisService.add(user.getUserName(),user);
 			return "redirect:/index";
@@ -64,7 +82,11 @@ public class LoginController {
 			msg = "登录密码错误";
 			logger.debug("登录密码错误");
 		}
+		//3.返回登录页
 		modelMap.addAttribute("msg", msg);
+        String publicKey = (String)redisService.get("publicKey");
+        logger.info("返回公钥："+publicKey);
+        modelMap.addAttribute("publicKey",publicKey);
 		return "login";
 	}
 

@@ -137,7 +137,7 @@ public class RSAUtils {
        String enStr = encrypt(getPublicKey(map.get("publicKey")),"123");
        System.out.println("¼ÓÃÜ×Ö·û´®£º"+enStr);
        String deStr = decrypt(getPrivateKey(map.get("privateKey")),enStr);
-        System.out.println(deStr);
+       System.out.println("½âÃÜ×Ö·û´®£º"+deStr);
 
     }
 }

@@ -9,8 +9,8 @@
     var publicKey = "${publicKey}";
     $(function () {
         $('#login_btn').click(function () {
-            var userNameStr = cryptico.encrypt($('#userName1').val(), publicKey).cipher.toString();
-            var userPassStr = cryptico.encrypt($('#userPass1').val(), publicKey).cipher.toString();
+            var userNameStr = cryptico.encrypt($('#userName1').val(), publicKey).cipher;
+            var userPassStr = cryptico.encrypt($('#userPass1').val(), publicKey).cipher;
             $("#userName").val(userNameStr);
             $("#userPass").val(userPassStr);
             console.log(userNameStr);

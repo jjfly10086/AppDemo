@@ -22,6 +22,7 @@ import com.demo.redis.IRedisService;
 import com.demo.service.IUserService;
 import com.demo.utils.BeanUtils;
 
+import java.security.PublicKey;
 import java.util.Map;
 
 
@@ -39,12 +40,12 @@ public class LoginController {
 	 * @return
 	 */
 	@RequestMapping("")
-	public String toLoginPage(ModelMap model) {
+	public String toLoginPage(ModelMap model) throws Exception{
         //2.从redis获取公钥返回页面
         IRedisService redisService = (IRedisService) BeanUtils.getBean("redisService");
-        String publicKey = (String)redisService.get("publicKey");
-        logger.info("返回公钥："+publicKey);
-        model.addAttribute("publicKey",publicKey);
+        String publicKeyStr = (String)redisService.get("publicKey");
+        logger.info("返回公钥："+publicKeyStr);
+        model.addAttribute("publicKey",publicKeyStr);
 		return "login";
 	}
 
@@ -84,9 +85,9 @@ public class LoginController {
 		}
 		//3.返回登录页
 		modelMap.addAttribute("msg", msg);
-        String publicKey = (String)redisService.get("publicKey");
-        logger.info("返回公钥："+publicKey);
-        modelMap.addAttribute("publicKey",publicKey);
+		String publicKeyStr = (String)redisService.get("publicKey");
+		logger.info("返回公钥："+publicKeyStr);
+		modelMap.addAttribute("publicKey",publicKeyStr);
 		return "login";
 	}
 

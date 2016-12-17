@@ -7,6 +7,7 @@ package com.demo.utils;
 
 
 
+import java.math.BigInteger;
 import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
@@ -134,10 +135,10 @@ public class RSAUtils {
     }
     public static void main(String[] args) throws Exception{
        Map<String,String> map = generateKeyPair();
-       String enStr = encrypt(getPublicKey(map.get("publicKey")),"123");
+       String enStr = encrypt(getPublicKey(map.get("publicKey")),"1234444");
        System.out.println("¼ÓÃÜ×Ö·û´®£º"+enStr);
+       enStr = "Anj8MFauvU6ljVAeaDJ6D4VI8ZPOEXN9t1dLsUjENZL6rz3I6d7EjP4dnp8RcSY9BBXHc0ITdams9gm9GMCWgA==?";
        String deStr = decrypt(getPrivateKey(map.get("privateKey")),enStr);
        System.out.println("½âÃÜ×Ö·û´®£º"+deStr);
-
     }
 }

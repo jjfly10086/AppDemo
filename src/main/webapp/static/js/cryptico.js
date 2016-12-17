@@ -3462,10 +3462,8 @@ var cryptico = (function() {
 
     my.publicKeyFromString = function(string)
     {
-        var tokens = string.split("|");
-        var N = tokens[0];
-        console.log(N);
-        var E = tokens.length > 1 ? tokens[1] : "03";
+        var N = my.b64to16(string.split("|")[0]);
+        var E = "03";
         var rsa = new RSAKey();
         rsa.setPublic(N, E);
         return rsa
@@ -3477,8 +3475,8 @@ var cryptico = (function() {
         var aeskey = my.generateAESKey();
         try
         {
-            var publickey = publicKeyFromString(publickeystring);
-            cipherblock += cryptico.b16to64(publickey.encrypt(plaintext));
+            var publickey = my.publicKeyFromString(publickeystring);
+            cipherblock += my.b16to64(publickey.encrypt(my.bytes2string(aeskey))) + "?";
         }
         catch(err)
         {

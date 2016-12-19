@@ -2,12 +2,7 @@ package com.demo.utils;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.springframework.ui.ModelMap;
-
-import com.demo.bean.UserBean;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -46,15 +41,6 @@ public class JacksonUtils {
 		return obj;
 	}
 	public static void main(String[] args) throws IOException {
-		ModelMap model = new ModelMap();
-		model.addAttribute("ssss", "ssss");
-		List<UserBean> list = new ArrayList<UserBean>();
-		UserBean user = new UserBean();
-		user.setId("1");
-		user.setUserName("aaa");
-		user.setUserPass("1232");
-		list.add(user);
-		model.addAttribute("list", list);
-		System.out.println(parseObj2Json(model));
+		
 	}
 }

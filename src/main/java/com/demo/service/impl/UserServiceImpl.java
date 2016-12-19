@@ -5,8 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.demo.bean.AuthBean;
-import com.demo.bean.RoleBean;
 import com.demo.bean.UserBean;
 import com.demo.dao.IUserDao;
 import com.demo.service.IUserService;
@@ -26,13 +24,4 @@ public class UserServiceImpl implements IUserService {
 	public UserBean findUserByUsername(String userName) {
 		return userDao.findUserByUsername(userName);
 	}
-	@Override
-	public List<RoleBean> queryRoleListByUserId(String userId) {
-		return userDao.queryRoleListByUserId(userId);
-	}
-	@Override
-	public List<AuthBean> queryAuthListByRoleId(String roleId) {
-		return userDao.queryAuthListByRoleId(roleId);
-	}
-
 }	

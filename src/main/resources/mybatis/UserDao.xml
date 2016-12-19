@@ -17,18 +17,4 @@
 	<select id="findUserByUsername" resultMap="userMap" parameterType="java.lang.String">
 		select id,user_name,user_pass,create_time from t_user where user_name=#{userName}
 	</select>
-	<!--根据用户查角色  -->
-	<select id="queryRoleListByUserId" parameterType="java.lang.String" resultType="com.demo.bean.RoleBean">
-		select r.id,r.role_name roleName from t_user_role ur
-		left join t_user u on u.id = ur.user_id
-		left join t_role r on r.id = ur.role_id
-		where u.id=#{userId}
-	</select>
-	<!--根据角色查权限  -->
-	<select id="queryAuthListByRoleId" parameterType="java.lang.String" resultType="com.demo.bean.AuthBean">
-		select a.id,a.auth_name authName from t_role_auth ra
-		left join t_role r on r.id = ra.role_id
-		left join t_auth a on a.id = ra.auth_id
-		where r.id=#{roleId}
-	</select>
 </mapper>

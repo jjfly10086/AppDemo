@@ -33,24 +33,48 @@ import com.demo.utils.TokenUtils;
  *
  */
 @Controller("appLoginController")
-@RequestMapping("/app")
-public class AppController {
+@RequestMapping("/app/login")
+public class AppLoginController {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Autowired
 	private IUserService userService;
 	
-	@RequestMapping("/login")
+	/**
+	 * ªÒ»°√‹‘ø
+	 * @return
+	 */
+	@RequestMapping("/getKey")
+	@ResponseBody
+	public ResultBean getPublicKey(){
+		ResultBean result = new ResultBean();
+		IRedisService redisService = (IRedisService)BeanUtils.getBean("redisService");
+		String publicKeyStr = (String)redisService.get("publicKey");
+		result.setCode(ResultCode.SUCCESS);
+		result.setMsg(ResultMsg.OPERATING_SUCCESS);
+		result.setData(publicKeyStr);
+		return result;
+	}
+	/**
+	 * µ«¬º
+	 * @param req
+	 * @param res
+	 * @return
+	 */
+	@RequestMapping("/doLogin")
 	@ResponseBody
 	public ResultBean doLogin(HttpServletRequest req,HttpServletResponse res){
 		ResultBean result = new ResultBean();
+		result.setCode(ResultCode.FAILURE);
+		result.setMsg(ResultMsg.OPERATING_FAILURE);
 		String telephone = req.getParameter("telephone");
 		String userPass = req.getParameter("userPass");
 		//1.≈–∂œ∑«ø’
 		if(StringUtils.isEmpty(telephone,userPass)){
 			result.setCode(ResultCode.FAILURE);
 			result.setMsg(ResultMsg.NULL_PARAMETER);
+			return result;
 		}
 		//2.RSAΩ‚√‹√‹¬Î
 		IRedisService redisService = (IRedisService)BeanUtils.getBean("redisService");
@@ -60,6 +84,7 @@ public class AppController {
 			userPass = RSAUtils.decrypt(privateKey, userPass);
 		} catch (Exception e) {
 			logger.error("√‹¬ÎΩ‚Œˆ¥ÌŒÛ",e);
+			return result;
 		}
 		//3.≤È’“”√ªß
 		UserBean user =userService.findUserByUsername(telephone);
@@ -73,13 +98,5 @@ public class AppController {
 			}
 		}
 		return result;
-	}
-	@ResponseBody
-	@RequestMapping("/userList")
-	public ModelMap getUser(){
-		ModelMap model = new ModelMap();
-		List<UserBean> userList = userService.queryList();
-		model.addAttribute("userList", userList);
-		return model;
 	}
 }

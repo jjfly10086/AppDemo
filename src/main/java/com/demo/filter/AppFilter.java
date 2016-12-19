@@ -53,13 +53,12 @@ public class AppFilter implements Filter {
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		// TODO Auto-generated method stub
-		// place your code here
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
+		//1.loginController不需要过滤，直接放行
 		if(req.getRequestURI().contains("/app/login")){
 			
-		}else if(req.getRequestURI().contains("/app")){
+		}else{
 			logger.info("过滤请求："+req.getRequestURI());
 			//验证token是否合法
 			String token = req.getHeader("Authorization");

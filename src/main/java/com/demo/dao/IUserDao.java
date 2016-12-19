@@ -8,5 +8,5 @@ public interface IUserDao {
 	
 	List<UserBean> queryList();
 	
-	UserBean findUserByUsername(String telephone);
+	UserBean findUserByTelephone(String telephone);
 }

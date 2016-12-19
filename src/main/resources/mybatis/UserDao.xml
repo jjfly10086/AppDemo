@@ -6,6 +6,8 @@
 		<result property="telephone" column="telephone" />
 		<result property="userName" column="user_name" />
 		<result property="userPass" column="user_pass" />
+		<result property="verifyCode" column="verify_code"/>
+		<result property="verifyCodeSendtime" column="verify_code_sendtime"/> 
 		<result property="createTime" column="create_time" />
 	</resultMap>
 	<select id="queryList" resultMap="userMap">
@@ -13,10 +15,12 @@
 		telephone,
 		user_name,
 		user_pass, 
+		verify_code,
+		verify_code_sendtime,
 		create_time
 		from t_user
 	</select>
-	<select id="findUserByUsername" resultMap="userMap" parameterType="java.lang.String">
+	<select id="findUserByTelephone" resultMap="userMap" parameterType="java.lang.String">
 		select id,telephone,user_name,user_pass,create_time from t_user where telephone=#{telephone}
 	</select>
 </mapper>

@@ -1,7 +1,8 @@
 package com.demo.controller;
 
 import java.security.PrivateKey;
-import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -87,7 +87,7 @@ public class AppLoginController {
 			return result;
 		}
 		//3.查找用户
-		UserBean user =userService.findUserByUsername(telephone);
+		UserBean user =userService.findUserByTelephone(telephone);
 		if(user != null){
 			//4.md5验证
 			if(MD5Utils.verify(userPass, user.getUserPass())){
@@ -96,6 +96,33 @@ public class AppLoginController {
 				result.setCode(ResultCode.SUCCESS);
 				result.setMsg(ResultMsg.OPERATING_SUCCESS);
 			}
+		}
+		return result;
+	}
+	@RequestMapping("/sendMsg")
+	@ResponseBody
+	public ResultBean sendMsg(String telephone){
+		ResultBean result = new ResultBean();
+		result.setCode(ResultCode.SUCCESS);
+		result.setMsg(ResultMsg.OPERATING_SUCCESS);
+		//1.验证非空
+		if(StringUtils.isEmpty(telephone)){
+			result.setCode(ResultCode.FAILURE);
+			result.setMsg(ResultMsg.NULL_PARAMETER);
+			return result;
+		}
+		//2.验证电话格式
+		Pattern pattern = Pattern.compile("^[1][0-9]{10}$");
+		Matcher matcher = pattern.matcher(telephone);
+		if(!matcher.matches()){
+			result.setCode(ResultCode.FAILURE);
+			result.setMsg(ResultMsg.WRONG_MOBILE);
+			return result;
+		}
+		//3.查找用户，如若不存在，新建
+		UserBean userBean = userService.findUserByTelephone(telephone);
+		if(null == userBean){
+			
 		}
 		return result;
 	}

@@ -35,11 +35,11 @@ public class AppFilter implements Filter {
     public AppFilter() {
         // TODO Auto-generated constructor stub
 		//创建该过滤器时初始化密钥对到Redis服务器中
-		Map<String,String> keyPairMap = RSAUtils.generateKeyPair();
-		IRedisService redisService = (IRedisService) BeanUtils.getBean("redisService");
-		redisService.add("publicKey",keyPairMap.get("publicKey"));
-		redisService.add("privateKey",keyPairMap.get("privateKey"));
-		logger.info("初始化密钥对成功---------------------------------------");
+//		Map<String,String> keyPairMap = RSAUtils.generateKeyPair();
+//		IRedisService redisService = (IRedisService) BeanUtils.getBean("redisService");
+//		redisService.add("publicKey",keyPairMap.get("publicKey"));
+//		redisService.add("privateKey",keyPairMap.get("privateKey"));
+//		logger.info("初始化密钥对成功---------------------------------------");
     }
 
 	/**

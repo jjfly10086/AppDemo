@@ -21,7 +21,7 @@ public class UserServiceImpl implements IUserService {
 	 * 根据用户名查找用户
 	 */
 	@Override
-	public UserBean findUserByUsername(String userName) {
-		return userDao.findUserByUsername(userName);
+	public UserBean findUserByUsername(String telephone) {
+		return userDao.findUserByUsername(telephone);
 	}
 }	

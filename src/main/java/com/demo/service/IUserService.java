@@ -11,5 +11,5 @@ public interface IUserService {
 	 * @param userName
 	 * @return
 	 */
-	UserBean findUserByUsername(String userName);
+	UserBean findUserByUsername(String telephone);
 }

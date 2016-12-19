@@ -47,26 +47,6 @@
 		<!-- 内存中的最大值 -->
 		<property name="maxInMemorySize" value="40960" />
 	</bean>
-	<!-- 开启Shiro的注解(如@RequiresRoles，@RequiresPermissions)，需借助SpringAOP扫描使用Shiro注解的类， 
-		并在必要时进行安全逻辑验证 ;并解决shiro注解和controller aop冲突的问题-->
-	<aop:config proxy-target-class="true"/>  
-	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">  
-    	<property name="securityManager" ref="securityManager"/>  
-	</bean>  
-	<!--配置controller无权限时抛出的异常处理: -->
-	<bean
-		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-		<!-- 定义默认的异常处理页面 -->
-		<property name="defaultErrorView" value="error"></property>
-		<!-- 定义异常处理页面用来获取异常信息的变量名，默认名为exception -->
-		<property name="exceptionAttribute" value="ex"></property>
-		<property name="exceptionMappings">
-			<props>
-				<!--待捕获的异常类型列表  -->
-				<prop key="org.apache.shiro.authz.UnauthorizedException">error</prop>
-			</props>
-		</property>
-	</bean>
 	<!--aop controller层日志监控，必须放在springContext文件下  -->
 	<bean id="controllerInterceptor" class="com.demo.aop.ControllerInterceptor"></bean>
 	<context:component-scan base-package="com.demo.aop"></context:component-scan>

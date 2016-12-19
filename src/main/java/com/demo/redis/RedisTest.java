@@ -6,7 +6,7 @@ public class RedisTest {
 	public static void main(String[] args) {
 		
 		Jedis jedis = new Jedis("103.237.0.165", 6379);
-		jedis.auth("123456");
+		jedis.auth("xxxxxx");
 		jedis.set("name","xinxin");//向key-->name中放入了value-->xinxin  
 		System.out.println(jedis.get("name"));//执行结果：xinxin  
 	}

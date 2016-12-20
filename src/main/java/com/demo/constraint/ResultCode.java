@@ -6,5 +6,5 @@ package com.demo.constraint;
  */
 public interface ResultCode {
 	public static final int SUCCESS = 0;//³É¹¦
-	public static final int FAILURE = 1;//Ê§°Ü
+	public static final int FAILURE = 1001;//Ê§°Ü
 }

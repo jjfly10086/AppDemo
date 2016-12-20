@@ -49,10 +49,10 @@ public class AppLoginController {
 	@ResponseBody
 	public ResultBean getPublicKey(){
 		ResultBean result = new ResultBean();
-		IRedisService redisService = (IRedisService)BeanUtils.getBean("redisService");
-		String publicKeyStr = (String)redisService.get("publicKey");
 		result.setCode(ResultCode.SUCCESS);
 		result.setMsg(ResultMsg.OPERATING_SUCCESS);
+		IRedisService redisService = (IRedisService)BeanUtils.getBean("redisService");
+		String publicKeyStr = (String)redisService.get("publicKey");
 		result.setData(publicKeyStr);
 		return result;
 	}
@@ -72,7 +72,6 @@ public class AppLoginController {
 		String userPass = req.getParameter("userPass");
 		//1.判断非空
 		if(StringUtils.isEmpty(telephone,userPass)){
-			result.setCode(ResultCode.FAILURE);
 			result.setMsg(ResultMsg.NULL_PARAMETER);
 			return result;
 		}
@@ -84,13 +83,20 @@ public class AppLoginController {
 			userPass = RSAUtils.decrypt(privateKey, userPass);
 		} catch (Exception e) {
 			logger.error("密码解析错误",e);
+			result.setMsg(ResultMsg.PASSWORD_PARSE_ERROR);
 			return result;
 		}
 		//3.查找用户
 		UserBean user =userService.findUserByTelephone(telephone);
-		if(user != null){
+		if(StringUtils.isEmpty(user)){
+			result.setMsg(ResultMsg.USER_NOT_EXIST);
+			return result;
+		}else{
 			//4.md5验证
-			if(MD5Utils.verify(userPass, user.getUserPass())){
+			if(!MD5Utils.verify(userPass, user.getUserPass())){//验证密码失败
+				result.setMsg(ResultMsg.WRONG_PASSWORD_ERROR);
+				return result;
+			}else{
 				String token = TokenUtils.generateToken(user.getId());
 				res.setHeader("Authorization", token);
 				result.setCode(ResultCode.SUCCESS);
@@ -99,15 +105,48 @@ public class AppLoginController {
 		}
 		return result;
 	}
+	/**
+	 * 验证用户是否存在
+	 * @param telephone
+	 * @return
+	 */
+	@RequestMapping("/checkUser")
+	@ResponseBody
+	public ResultBean checkUserExist(String telephone){
+		ResultBean result = new ResultBean();
+		result.setCode(ResultCode.FAILURE);
+		result.setMsg(ResultMsg.OPERATING_FAILURE);
+		//1.验证非空
+		if(StringUtils.isEmpty(telephone)){
+			result.setMsg(ResultMsg.NULL_PARAMETER);
+			return result;
+		}
+		//2.查找用户
+		UserBean user = userService.findUserByTelephone(telephone);
+		if(StringUtils.isEmpty(user)){//用户不存在
+			result.setCode(ResultCode.SUCCESS);
+			result.setMsg(ResultMsg.USER_NOT_EXIST);
+			result.setData(false);
+		}else{//已存在
+			result.setCode(ResultCode.SUCCESS);
+			result.setMsg(ResultMsg.USER_ALREADY_EXIST);
+			result.setData(true);
+		}
+		return result;
+	}
+	/**
+	 * 
+	 * @param telephone
+	 * @return
+	 */
 	@RequestMapping("/sendMsg")
 	@ResponseBody
 	public ResultBean sendMsg(String telephone){
 		ResultBean result = new ResultBean();
-		result.setCode(ResultCode.SUCCESS);
-		result.setMsg(ResultMsg.OPERATING_SUCCESS);
+		result.setCode(ResultCode.FAILURE);
+		result.setMsg(ResultMsg.OPERATING_FAILURE);
 		//1.验证非空
 		if(StringUtils.isEmpty(telephone)){
-			result.setCode(ResultCode.FAILURE);
 			result.setMsg(ResultMsg.NULL_PARAMETER);
 			return result;
 		}
@@ -115,7 +154,6 @@ public class AppLoginController {
 		Pattern pattern = Pattern.compile("^[1][0-9]{10}$");
 		Matcher matcher = pattern.matcher(telephone);
 		if(!matcher.matches()){
-			result.setCode(ResultCode.FAILURE);
 			result.setMsg(ResultMsg.WRONG_MOBILE);
 			return result;
 		}

@@ -14,12 +14,13 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.demo.redis.IRedisService;
-import com.demo.utils.BeanUtils;
-import com.demo.utils.RSAUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.auth0.jwt.JWT;
+import com.demo.redis.IRedisService;
+import com.demo.utils.BeanUtils;
+import com.demo.utils.RSAUtils;
 import com.demo.utils.TokenUtils;
 
 /**
@@ -67,15 +68,17 @@ public class AppFilter implements Filter {
 				logger.info("请求："+req.getRequestURI()+" 无验证信息");
 				return ;
 			}
-			if(null == TokenUtils.verifyToken(token)){
+			try{
+				JWT jwt = TokenUtils.verifyToken(token);
+			}catch(Exception e){
+				logger.info("验证请求头异常",e);
 				res.setCharacterEncoding("utf-8");
 				res.setContentType("text/html");
-				res.setStatus(401);
+				res.setStatus(500);
 				PrintWriter out = res.getWriter();
 				out.write("{\"code\":1001,\"msg\":\"验证信息不正确\",\"data\":null}");
 				out.flush();
 				out.close();
-				logger.info("请求："+req.getRequestURI()+" 验证信息不正确");
 				return ;
 			}
 		}

@@ -58,7 +58,7 @@ public class AppFilter implements Filter {
 		//1.loginController不需要过滤，直接放行
 		if(req.getRequestURI().contains("/app/login")){
 			
-		}else{
+		}else if(req.getRequestURI().contains("/app")){
 			logger.info("过滤请求："+req.getRequestURI());
 			//验证token是否合法
 			String token = req.getHeader("Authorization");

@@ -11,8 +11,6 @@ public class UserBean implements Serializable{
 	private String telephone;//电话号码
 	private String userName;//用户名
 	private String userPass;//密码
-	private String verifyCode;//验证码
-	private String verifyCodeSendtime;//发送时间
 	private String createTime;//创建时间
 
 	public String getId() {
@@ -47,22 +45,6 @@ public class UserBean implements Serializable{
 		this.userPass = userPass;
 	}
 	
-	public String getVerifyCode() {
-		return verifyCode;
-	}
-
-	public void setVerifyCode(String verifyCode) {
-		this.verifyCode = verifyCode;
-	}
-
-	public String getVerifyCodeSendtime() {
-		return verifyCodeSendtime;
-	}
-
-	public void setVerifyCodeSendtime(String verifyCodeSendtime) {
-		this.verifyCodeSendtime = verifyCodeSendtime;
-	}
-
 	public String getCreateTime() {
 		return createTime;
 	}

@@ -24,4 +24,11 @@ public class UserServiceImpl implements IUserService {
 	public UserBean findUserByTelephone(String telephone) {
 		return userDao.findUserByTelephone(telephone);
 	}
+	/**
+	 * 新增用户
+	 */
+	@Override
+	public int addUser(UserBean userBean) {
+		return userDao.addUser(userBean);
+	}
 }	

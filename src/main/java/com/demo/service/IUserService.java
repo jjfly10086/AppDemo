@@ -13,5 +13,10 @@ public interface IUserService {
 	 * @return
 	 */
 	UserBean findUserByTelephone(String telephone);
-	
+	/**
+	 * 新建用户
+	 * @param userBean
+	 * @return
+	 */
+	int addUser(UserBean userBean);
 }

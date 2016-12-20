@@ -9,4 +9,6 @@ public interface IUserDao {
 	List<UserBean> queryList();
 	
 	UserBean findUserByTelephone(String telephone);
+	
+	int addUser(UserBean userBean);
 }

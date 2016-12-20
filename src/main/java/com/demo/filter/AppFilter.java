@@ -84,7 +84,6 @@ public class AppFilter implements Filter {
 				logger.info("请求："+req.getRequestURI()+" 验证信息不正确");
 				return ;
 			}
-			logger.info(req.getRemoteAddr()+" "+req.getRemoteHost()+req.getRemotePort()+req.getRemoteUser());
 		}
 		// pass the request along the filter chain
 		chain.doFilter(request, response);

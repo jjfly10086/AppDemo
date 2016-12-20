@@ -191,6 +191,8 @@ public class AppLoginController {
 			userService.addUser(userBean);
 			result.setCode(ResultCode.SUCCESS);
 			result.setMsg(ResultMsg.OPERATING_SUCCESS);
+		}else{//—È÷§ ß∞‹
+			result.setMsg(httpMap.get("status")+"");
 		}
 		return result;
 	}

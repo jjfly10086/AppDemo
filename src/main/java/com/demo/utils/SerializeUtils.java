@@ -27,4 +27,8 @@ public class SerializeUtils {
 		ObjectInputStream ois = new ObjectInputStream(bais);
 		return ois.readObject();
 	}
+	public static void main(String[] args) throws IOException {
+		String a = "publicKey";
+		System.out.println(new String(serialize(a)));
+	}
 }

@@ -13,7 +13,7 @@ public class JacksonUtils {
 	private static ObjectMapper objectMapper = new ObjectMapper();
 	
 	/**
-	 * object×ªjson
+	 * object(°üº¬map)×ªjson
 	 * @param obj
 	 * @return
 	 * @throws IOException
@@ -40,6 +40,7 @@ public class JacksonUtils {
 		Object obj = objectMapper.readValue(json, cls);
 		return obj;
 	}
+	
 	public static void main(String[] args) throws IOException {
 		
 	}

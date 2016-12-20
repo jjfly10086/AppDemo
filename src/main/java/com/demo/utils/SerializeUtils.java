@@ -13,12 +13,10 @@ import java.io.ObjectOutputStream;
  */
 public class SerializeUtils {
 	public static byte[] serialize(Object object) throws IOException {
-		ObjectOutputStream oos = null;
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		oos = new ObjectOutputStream(baos);
+        ObjectOutputStream  oos = new ObjectOutputStream(baos);
 		oos.writeObject(object);
-		byte[] bytes = baos.toByteArray();
-		return bytes;
+		return baos.toByteArray();
 
 	}
 
@@ -30,5 +28,10 @@ public class SerializeUtils {
 	public static void main(String[] args) throws IOException {
 		String a = "publicKey";
 		System.out.println(new String(serialize(a)));
+		try {
+			System.out.println(unserialize(serialize(a)));
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 }

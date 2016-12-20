@@ -58,10 +58,10 @@ public class AppFilter implements Filter {
 			String token = req.getHeader("Authorization");
 			if(null == token){
 				res.setCharacterEncoding("utf-8");
-				res.setContentType("text/json");
+				res.setContentType("text/html");
 				res.setStatus(401);
 				PrintWriter out = res.getWriter();
-				out.write("{'flag':1,'error':'缺少验证信息'}");
+				out.write("{\"code\":1001,\"msg\":\"缺少验证信息\",\"data\":null}");
 				out.flush();
 				out.close();
 				logger.info("请求："+req.getRequestURI()+" 无验证信息");
@@ -69,10 +69,10 @@ public class AppFilter implements Filter {
 			}
 			if(null == TokenUtils.verifyToken(token)){
 				res.setCharacterEncoding("utf-8");
-				res.setContentType("text/json");
+				res.setContentType("text/html");
 				res.setStatus(401);
 				PrintWriter out = res.getWriter();
-				out.write("{'flag':1,'error':'验证不通过'}");
+				out.write("{\"code\":1001,\"msg\":\"验证信息不正确\",\"data\":null}");
 				out.flush();
 				out.close();
 				logger.info("请求："+req.getRequestURI()+" 验证信息不正确");

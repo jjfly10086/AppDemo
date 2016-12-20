@@ -8,7 +8,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.demo.bean.ResultBean;
 import com.demo.bean.UserBean;
+import com.demo.constraint.ResultCode;
+import com.demo.constraint.ResultMsg;
 import com.demo.service.IUserService;
 
 @Controller("testController")
@@ -20,10 +23,12 @@ public class TestController {
 	
 	@ResponseBody
 	@RequestMapping("/userList")
-	public ModelMap getUser(){
-		ModelMap model = new ModelMap();
+	public ResultBean getUser(){
+		ResultBean result = new ResultBean();
+		result.setCode(ResultCode.SUCCESS);
+		result.setMsg(ResultMsg.OPERATING_SUCCESS);
 		List<UserBean> userList = userService.queryList();
-		model.addAttribute("userList", userList);
-		return model;
+		result.setData(userList);
+		return result;
 	}
 }

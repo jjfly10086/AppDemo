@@ -8,6 +8,7 @@
 	<!--引入spring各个模块配置文件 -->
 	<import resource="spring-jdbc.xml" />
 	<import resource="spring-redis.xml" />
+	<import resource="spring-quartz.xml"/>
 	<!--aopService层日志管理 -->
 	<!--注入Service层日志处理Bean -->
 	<bean id="bizLogInterceptor" class="com.demo.aop.BizLogInterceptor"></bean>

@@ -8,7 +8,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
 
-import com.demo.utils.SerializeUtils;
+import com.demo.utils.JacksonUtils;
 
 public class RedisServiceImpl extends MyRedisTemplate<String, Object> implements
 		IRedisService {
@@ -16,7 +16,7 @@ public class RedisServiceImpl extends MyRedisTemplate<String, Object> implements
 	private Logger logger = LoggerFactory.getLogger(RedisServiceImpl.class);
 
 	/**
-	 * 新增
+	 * 新增,对象转换为json字符串存取
 	 */
 	@Override
 	public boolean add(final String key, final Object obj) {
@@ -25,8 +25,14 @@ public class RedisServiceImpl extends MyRedisTemplate<String, Object> implements
 			public Boolean doInRedis(RedisConnection connection)
 					throws DataAccessException {
 				try {
-					byte[] keyByte = SerializeUtils.serialize(key);
-					byte[] value = SerializeUtils.serialize(obj);
+					byte[] keyByte = key.getBytes();
+					byte[] value = null;
+					if(obj instanceof String){
+						String str = (String)obj;
+						value = str.getBytes();
+					}else{
+						value = JacksonUtils.parseObj2Json(obj).getBytes();
+					}
 					connection.set(keyByte, value);
 				} catch (Exception e) {
 					logger.error("新增Redis key失败", e);
@@ -48,7 +54,7 @@ public class RedisServiceImpl extends MyRedisTemplate<String, Object> implements
 			public Boolean doInRedis(RedisConnection connection)
 					throws DataAccessException {
 				try {
-					if (connection.del(SerializeUtils.serialize(key)) > 0) {
+					if (connection.del(key.getBytes()) > 0) {
 						return true;
 					} else {
 						return false;
@@ -63,7 +69,7 @@ public class RedisServiceImpl extends MyRedisTemplate<String, Object> implements
 	}
 
 	/**
-	 * 获取用户
+	 * 获取对象字符串
 	 */
 	@Override
 	public Object get(final String key) {
@@ -73,10 +79,10 @@ public class RedisServiceImpl extends MyRedisTemplate<String, Object> implements
 					throws DataAccessException {
 				Object obj = null;
 				try {
-					obj = SerializeUtils.unserialize(connection
-							.get(SerializeUtils.serialize(key)));
-				} catch (ClassNotFoundException | IOException e) {
-					logger.error("获取Redis key失败", e);
+					obj = JacksonUtils.parseJson2Obj(new String(connection.get(key.getBytes())), Object.class);
+				} catch (IOException e) {
+					logger.error("JacksonUtils parse failed,Cause redis value is not a json string");
+					obj = new String(connection.get(key.getBytes()));
 				}
 				return obj;
 			}

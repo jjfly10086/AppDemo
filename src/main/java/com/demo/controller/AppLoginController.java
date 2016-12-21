@@ -55,7 +55,7 @@ public class AppLoginController {
 		result.setCode(ResultCode.SUCCESS);
 		result.setMsg(ResultMsg.OPERATING_SUCCESS);
 		IRedisService redisService = (IRedisService)BeanUtils.getBean("redisService");
-		String publicKeyStr = (String)redisService.get("publicKey");
+		String publicKeyStr = (String)redisService.get("publicKey",String.class);
 		result.setData(publicKeyStr);
 		return result;
 	}
@@ -78,7 +78,7 @@ public class AppLoginController {
 		}
 		//2.RSAΩ‚√‹√‹¬Î
 		IRedisService redisService = (IRedisService)BeanUtils.getBean("redisService");
-		String privateKeyStr = (String)redisService.get("privateKey");
+		String privateKeyStr = (String)redisService.get("privateKey",String.class);
 		try {
 			PrivateKey privateKey = RSAUtils.getPrivateKey(privateKeyStr);
 			userPass = RSAUtils.decrypt(privateKey, userPass);
@@ -157,7 +157,7 @@ public class AppLoginController {
 		IRedisService redisService = (IRedisService) BeanUtils.getBean("redisService");
 		PrivateKey privateKey;
 		try {
-			privateKey = RSAUtils.getPrivateKey((String)redisService.get("privateKey"));
+			privateKey = RSAUtils.getPrivateKey((String)redisService.get("privateKey",String.class));
 			userPass = RSAUtils.decrypt(privateKey, userPass);
 		} catch (Exception e) {
 			logger.error("√‹¬ÎΩ‚Œˆ¥ÌŒÛ", e);

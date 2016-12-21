@@ -69,24 +69,24 @@ public class RedisServiceImpl extends MyRedisTemplate<String, Object> implements
 	}
 
 	/**
-	 * 获取对象字符串
+	 * 获取对象
 	 */
 	@Override
-	public Object get(final String key) {
+	public Object get(final String key,final Class<?> cls) {
 		Object obj = redisTemplate.execute(new RedisCallback<Object>() {
 			@Override
 			public Object doInRedis(RedisConnection connection)
 					throws DataAccessException {
 				Object obj = null;
 				try {
-					obj = JacksonUtils.parseJson2Obj(new String(connection.get(key.getBytes())), Object.class);
+					String jsonStr = new String(connection.get(key.getBytes()));
+					obj = JacksonUtils.parseJson2Obj(jsonStr,cls);
 				} catch (IOException e) {
 					logger.error("JacksonUtils parse failed,Cause redis value is not a json string");
 					obj = new String(connection.get(key.getBytes()));
 				}
 				return obj;
 			}
-
 		});
 		return obj;
 	}

@@ -21,7 +21,7 @@
 	<bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">  
         	<list>  
-            	<ref bean="cronTrigger"/>  
+            	<!-- <ref bean="cronTrigger"/>   -->
         	</list>  
     	</property>  
 	</bean>

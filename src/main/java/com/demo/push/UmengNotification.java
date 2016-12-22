@@ -1,16 +1,8 @@
 package com.demo.push;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
 
 public abstract class UmengNotification {
@@ -60,20 +52,20 @@ public abstract class UmengNotification {
     	setProductionMode(false);
     }
 
-    ///发�?�消息描述，建议填写�?
+    ///发�?�消息描述，建议填写�?
     public void setDescription(String description) throws Exception {
     	setPredefinedKeyValue("description", description);
     }
 
-    ///定时发�?�时间，若不填写表示立即发�?��?�格�?: "YYYY-MM-DD hh:mm:ss"�?
+    ///定时发�?�时间，若不填写表示立即发�?��?�格�?: "YYYY-MM-DD hh:mm:ss"�?
     public void setStartTime(String startTime) throws Exception {
     	setPredefinedKeyValue("start_time", startTime);
     }
-    ///消息过期时间,格式: "YYYY-MM-DD hh:mm:ss"�?
+    ///消息过期时间,格式: "YYYY-MM-DD hh:mm:ss"�?
     public void setExpireTime(String expireTime) throws Exception {
     	setPredefinedKeyValue("expire_time", expireTime);
     }
-    ///发�?�限速，每秒发�?�的�?大条数�??
+    ///发�?�限速，每秒发�?�的�?大条数�??
     public void setMaxSendNum(Integer num) throws Exception {
     	setPredefinedKeyValue("max_send_num", num);
     }

@@ -1,10 +1,5 @@
 package com.demo.push;
 
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
-import org.apache.commons.codec.digest.DigestUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -219,7 +214,7 @@ public class Demo {
 		// And if you have many alias, you can also upload a file containing these alias, then 
 		// use file_id to send customized notification.
 		customizedcast.setAlias("alias", "alias_type");
-		customizedcast.setAlert("IOS 个�?�化测试");
+		customizedcast.setAlert("IOS 个�?�化测试");
 		customizedcast.setBadge( 0);
 		customizedcast.setSound( "default");
 		// TODO set 'production_mode' to 'true' if your app is under production mode
@@ -232,7 +227,7 @@ public class Demo {
 		// TODO upload your device tokens, and use '\n' to split them if there are multiple tokens 
 		String fileId = client.uploadContents(appkey,appMasterSecret,"aa"+"\n"+"bb");
 		filecast.setFileId( fileId);
-		filecast.setAlert("IOS 文件播测�?");
+		filecast.setAlert("IOS 文件播测�?");
 		filecast.setBadge( 0);
 		filecast.setSound( "default");
 		// TODO set 'production_mode' to 'true' if your app is under production mode

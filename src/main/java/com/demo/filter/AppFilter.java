@@ -3,6 +3,7 @@ package com.demo.filter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -69,7 +70,9 @@ public class AppFilter implements Filter {
 				return ;
 			}
 			try{
-				JWT jwt = TokenUtils.verifyToken(token);
+				IRedisService redisService = (IRedisService) BeanUtils.getBean("redisService");
+				String tokenSecret = (String)redisService.get("tokenSecret", String.class);
+				JWT jwt = TokenUtils.verifyToken(token,tokenSecret);
 			}catch(Exception e){
 				logger.info("验证请求头异常",e);
 				res.setCharacterEncoding("utf-8");
@@ -97,7 +100,8 @@ public class AppFilter implements Filter {
 		IRedisService redisService = (IRedisService) BeanUtils.getBean("redisService");
 		redisService.add("publicKey",keyPairMap.get("publicKey"));
 		redisService.add("privateKey",keyPairMap.get("privateKey"));
-		logger.info("初始化密钥对成功---------------------------------------");
+		redisService.add("tokenSecret", UUID.randomUUID().toString().replace("-", "").toUpperCase());
+		logger.info("初始化Redis数据成功---------------------------------------");
 	}
 
 }

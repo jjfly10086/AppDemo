@@ -9,8 +9,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 
 public class TokenUtils {
 
-	private static final String SECRET = "AE79909B06A84BBEBF292A01388B5140";
-
 	/**
 	 * Payload标准字段 iss : The issuer of the token，token 是给谁的 sub : The subject of
 	 * the token，token 主题 exp : Expiration Time。 token 过期时间，Unix 时间戳格式 iat :
@@ -39,12 +37,12 @@ public class TokenUtils {
 	 *            不早于
 	 * @return 返回token字符串，格式：xxx.xxx.xxx
 	 */
-	public static String generateToken(String jti) {
+	public static String generateToken(String jti,String tokenSecret) {
 		Date date = new Date();
 		String token = JWT.create().withJWTId(jti)
 				.withIssuedAt(date)
 				.withExpiresAt(new Date(date.getTime() + 1000 * 60 * 10))// 过期10分钟
-				.withNotBefore(date).sign(Algorithm.HMAC256(SECRET.getBytes()));
+				.withNotBefore(date).sign(Algorithm.HMAC256(tokenSecret.getBytes()));
 		return token;
 	}
 
@@ -54,17 +52,17 @@ public class TokenUtils {
 	 * @param token
 	 * @return
 	 */
-	public static JWT verifyToken(String token) {
+	public static JWT verifyToken(String token,String tokenSecret) {
 		JWTVerifier verifier = JWT
-				.require(Algorithm.HMAC256(SECRET.getBytes())).build();
+				.require(Algorithm.HMAC256(tokenSecret.getBytes())).build();
 		JWT jwt = (JWT) verifier.verify(token);
 		return jwt;
 	}
 
 	public static void main(String[] args) throws IOException {
-		String token = generateToken("111");
-		System.out.println(token);
-		JWT jwt = verifyToken(token);
-		System.out.println(jwt.getId());
+//		String token = generateToken("111");
+//		System.out.println(token);
+//		JWT jwt = verifyToken(token);
+//		System.out.println(jwt.getId());
 	}
 }

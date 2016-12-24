@@ -96,7 +96,8 @@ public class AppLoginController {
 				result.setMsg(ResultMsg.WRONG_PASSWORD_ERROR);
 				return result;
 			}else{
-				String token = TokenUtils.generateToken(user.getId());
+				String tokenSecret = (String)redisService.get("tokenSecret",String.class);
+				String token = TokenUtils.generateToken(user.getId(),tokenSecret);
 				res.setHeader("Authorization", token);
 				result.setCode(ResultCode.SUCCESS);
 				result.setMsg(ResultMsg.OPERATING_SUCCESS);

@@ -43,7 +43,7 @@ public class AppLoginController {
 	private IUserService userService;
 	
 	/**
-	 * »ñÈ¡ÃÜÔ¿
+	 * è·å–å¯†é’¥
 	 * @return
 	 */
 	@RequestMapping("/getKey")
@@ -58,7 +58,7 @@ public class AppLoginController {
 		return result;
 	}
 	/**
-	 * µÇÂ¼
+	 * ç™»å½•
 	 * @param req
 	 * @param res
 	 * @return
@@ -69,30 +69,30 @@ public class AppLoginController {
 		ResultBean result = new ResultBean();
 		result.setCode(ResultCode.FAILURE);
 		result.setMsg(ResultMsg.OPERATING_FAILURE);
-		//1.ÅĞ¶Ï·Ç¿Õ
+		//1.åˆ¤æ–­éç©º
 		if(StringUtils.isEmpty(telephone,userPass)){
 			result.setMsg(ResultMsg.NULL_PARAMETER);
 			return result;
 		}
-		//2.RSA½âÃÜÃÜÂë
+		//2.RSAè§£å¯†å¯†ç 
 		IRedisService redisService = (IRedisService)BeanUtils.getBean("redisService");
 		String privateKeyStr = (String)redisService.get("privateKey",String.class);
 		try {
 			PrivateKey privateKey = RSAUtils.getPrivateKey(privateKeyStr);
 			userPass = RSAUtils.decrypt(privateKey, userPass);
 		} catch (Exception e) {
-			logger.error("ÃÜÂë½âÎö´íÎó",e);
+			logger.error("å¯†ç è§£æé”™è¯¯",e);
 			result.setMsg(ResultMsg.PASSWORD_PARSE_ERROR);
 			return result;
 		}
-		//3.²éÕÒÓÃ»§
+		//3.æŸ¥æ‰¾ç”¨æˆ·
 		UserBean user =userService.findUserByTelephone(telephone);
 		if(StringUtils.isEmpty(user)){
 			result.setMsg(ResultMsg.USER_NOT_EXIST);
 			return result;
 		}else{
-			//4.md5ÑéÖ¤
-			if(!MD5Utils.verify(userPass, user.getUserPass())){//ÑéÖ¤ÃÜÂëÊ§°Ü
+			//4.md5éªŒè¯
+			if(!MD5Utils.verify(userPass, user.getUserPass())){//éªŒè¯å¯†ç å¤±è´¥
 				result.setMsg(ResultMsg.WRONG_PASSWORD_ERROR);
 				return result;
 			}else{
@@ -106,7 +106,7 @@ public class AppLoginController {
 		return result;
 	}
 	/**
-	 * ÑéÖ¤ÓÃ»§ÊÇ·ñ´æÔÚ
+	 * éªŒè¯ç”¨æˆ·æ˜¯å¦å­˜åœ¨
 	 * @param telephone
 	 * @return
 	 */
@@ -116,18 +116,18 @@ public class AppLoginController {
 		ResultBean result = new ResultBean();
 		result.setCode(ResultCode.FAILURE);
 		result.setMsg(ResultMsg.OPERATING_FAILURE);
-		//1.ÑéÖ¤·Ç¿Õ
+		//1.éªŒè¯éç©º
 		if(StringUtils.isEmpty(telephone)){
 			result.setMsg(ResultMsg.NULL_PARAMETER);
 			return result;
 		}
-		//2.²éÕÒÓÃ»§
+		//2.æŸ¥æ‰¾ç”¨æˆ·
 		UserBean user = userService.findUserByTelephone(telephone);
-		if(StringUtils.isEmpty(user)){//ÓÃ»§²»´æÔÚ
+		if(StringUtils.isEmpty(user)){//ç”¨æˆ·ä¸å­˜åœ¨
 			result.setCode(ResultCode.SUCCESS);
 			result.setMsg(ResultMsg.USER_NOT_EXIST);
 			result.setData(false);
-		}else{//ÒÑ´æÔÚ
+		}else{//å·²å­˜åœ¨
 			result.setCode(ResultCode.SUCCESS);
 			result.setMsg(ResultMsg.USER_ALREADY_EXIST);
 			result.setData(true);
@@ -135,7 +135,7 @@ public class AppLoginController {
 		return result;
 	}
 	/**
-	 * ÑéÖ¤²¢×¢²á
+	 * éªŒè¯å¹¶æ³¨å†Œ
 	 * @param telephone
 	 * @param verifyCode 
 	 * @param userPass
@@ -147,30 +147,30 @@ public class AppLoginController {
 		ResultBean result = new ResultBean();
 		result.setCode(ResultCode.FAILURE);
 		result.setMsg(ResultMsg.OPERATING_FAILURE);
-		//1.ÑéÖ¤·Ç¿Õ
+		//1.éªŒè¯éç©º
 		if(StringUtils.isEmpty(telephone,verifyCode,userPass)){
 			result.setMsg(ResultMsg.NULL_PARAMETER);
 			return result;
 		}
-		//2.ÃÜÂë×ªÂë
+		//2.å¯†ç è½¬ç 
 		IRedisService redisService = (IRedisService) BeanUtils.getBean("redisService");
 		PrivateKey privateKey;
 		try {
 			privateKey = RSAUtils.getPrivateKey((String)redisService.get("privateKey",String.class));
 			userPass = RSAUtils.decrypt(privateKey, userPass);
 		} catch (Exception e) {
-			logger.error("ÃÜÂë½âÎö´íÎó", e);
+			logger.error("å¯†ç è§£æé”™è¯¯", e);
 			result.setMsg(ResultMsg.PASSWORD_PARSE_ERROR);
 			return result;
 		}
-		//3.²éÕÒÓÃ»§
+		//3.æŸ¥æ‰¾ç”¨æˆ·
 		UserBean userBean = userService.findUserByTelephone(telephone);
 		if(!StringUtils.isEmpty(userBean)){
 			result.setMsg(ResultMsg.USER_ALREADY_EXIST);
 			return result;
 		}
-		//4.ÑéÖ¤ÑéÖ¤Âë
-		String appKey = "1a0cc645325b2";
+		//4.éªŒè¯éªŒè¯ç 
+		String appKey = "xxxxxxxxxxx";
 		String zone = "86";
 		String params = "appKey="+appKey+"&phone="+telephone+"&zone="+zone+"&code="+verifyCode;
 		String httpRes = HttpUtils.requestData("https://webapi.sms.mob.com/sms/verify", params);
@@ -178,19 +178,19 @@ public class AppLoginController {
 		try {
 			httpMap = (Map<String,Object>)JacksonUtils.parseJson2Obj(httpRes, Map.class);
 		} catch (IOException e) {
-			logger.error("µÚÈı·½·µ»Ø½á¹û½âÎö´íÎó");
+			logger.error("ç¬¬ä¸‰æ–¹è¿”å›ç»“æœè§£æé”™è¯¯");
 			result.setMsg(ResultMsg.SYSTEM_ERROR);
 			return result;
 		}
 		if((Integer)httpMap.get("status")==200){
-			//5.×¢²á
+			//5.æ³¨å†Œ
 			userBean = new UserBean();
 			userBean.setTelephone(telephone);
 			userBean.setUserPass(MD5Utils.generate(userPass));
 			userService.addUser(userBean);
 			result.setCode(ResultCode.SUCCESS);
 			result.setMsg(ResultMsg.OPERATING_SUCCESS);
-		}else{//ÑéÖ¤Ê§°Ü
+		}else{//éªŒè¯å¤±è´¥
 			result.setMsg(httpMap.get("status")+"");
 		}
 		return result;
